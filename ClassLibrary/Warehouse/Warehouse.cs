@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace ClassLibrary
     /// and is the only class able to create Boxes and WarehouseLocations.
     /// Note: I'd rather make the factory a separate class, but my exam explicitly demands the Warehouse to take care of it.
     /// </summary>
-    public class Warehouse
+    public class Warehouse : IEnumerable
     {
         private WarehouseLocation[,] storage;
         private readonly int numberOfLocations;
@@ -48,16 +49,16 @@ namespace ClassLibrary
         /// <returns>An empty 2-dimensional WarehouseLocation-array, with input floors and locations per floor. ([locations,floors])</returns>
         private WarehouseLocation[,] CreateStorage(int amountOfLocations, int amountOfFloors)
         {
-            WarehouseLocation[,] newWarehouseLocation = new WarehouseLocation[amountOfLocations, amountOfFloors];
+            WarehouseLocation[,] newStorage = new WarehouseLocation[amountOfLocations, amountOfFloors];
             //Initializing the storage with empty WarehouseLocations
-            for (int i = 0; i < newWarehouseLocation.GetLength(0); i++)
+            for (int i = 0; i < newStorage.GetLength(0); i++)
             {
-                for (int j = 0; j < newWarehouseLocation.GetLength(1); j++)
+                for (int j = 0; j < newStorage.GetLength(1); j++)
                 {
-                    newWarehouseLocation[i, j] = new WarehouseLocation(150, 250, 200, 1000);
+                    newStorage[i, j] = CreateEmptyWarehouseLocation();
                 }
             }
-            return newWarehouseLocation;
+            return newStorage;
         }
         /// <summary>
         /// Creates and returns a new, empty, WarehouseLocation
@@ -300,6 +301,11 @@ namespace ClassLibrary
                 return false;
             }
             return true;
+        }
+        
+        public IEnumerator GetEnumerator()
+        {
+            return storage.GetEnumerator();
         }
     }
 }

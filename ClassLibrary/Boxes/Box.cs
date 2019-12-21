@@ -50,5 +50,6 @@ namespace ClassLibrary
         internal abstract int FindMaxDimension();
         internal abstract string ToDatabaseString();
         public abstract override string ToString();
+        public abstract string ToShortString();
     }
 }

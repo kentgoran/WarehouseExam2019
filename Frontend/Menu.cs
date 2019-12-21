@@ -30,8 +30,9 @@ namespace Frontend
                     Console.WriteLine("[3]    Remove a box");
                     Console.WriteLine("[4]    Search for a box using ID-number");
                     Console.WriteLine("[5]    List boxes in a specific warehouse-location");
-                    Console.WriteLine("[6]    Read/Save data");
-                    Console.WriteLine("[7]    Exit");
+                    Console.WriteLine("[6]    List all locations and all boxes found within");
+                    Console.WriteLine("[7]    Read/Save data");
+                    Console.WriteLine("[8]    Exit");
                     ConsoleKey chosenInput = Console.ReadKey().Key;
                     switch (chosenInput)
                     {
@@ -57,10 +58,14 @@ namespace Frontend
                             break;
                         case ConsoleKey.D6:
                         case ConsoleKey.NumPad6:
-                            ReadSaveMenu();
+                            functions.ListAllBoxesInWarehouse();
                             break;
                         case ConsoleKey.D7:
                         case ConsoleKey.NumPad7:
+                            ReadSaveMenu();
+                            break;
+                        case ConsoleKey.D8:
+                        case ConsoleKey.NumPad8:
                         case ConsoleKey.Escape:
                             functions.ExitQuestion();
                             break;

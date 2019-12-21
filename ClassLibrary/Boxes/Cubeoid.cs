@@ -103,5 +103,14 @@ namespace ClassLibrary
             returnString.AppendLine("Max Dimension: " + MaxDimension + " cm");
             return returnString.ToString();
         }
+        /// <summary>
+        /// A method that returns a string containing type and ID of current box
+        /// </summary>
+        /// <returns>A string like this "Type: Blob, ID: 14823"</returns>
+        public override string ToShortString()
+        {
+            string shortDescription = "Type: Cubeoid, ID: " + ID;
+            return shortDescription;
+        }
     }
 }

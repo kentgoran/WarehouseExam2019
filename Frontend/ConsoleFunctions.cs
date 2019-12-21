@@ -21,6 +21,7 @@ namespace Frontend
         internal void AddBox(BoxType boxType)
         {
             Console.Clear();
+            Console.WriteLine("Add a new box:");
             string description = GetDescription(boxType);
             double weight = GetWeight();
             //If it's a blob, don't ask for fragile, else, ask.
@@ -59,20 +60,32 @@ namespace Frontend
         /// </summary>
         internal void MoveBox()
         {
+            Console.Clear();
+            Console.WriteLine("Move a box:");
             int IDToMove = GetBoxID();
-            int newLocation = RetrieveIndexFromUser("location", warehouse.NumberOfLocations - 1);
-            int newFloor = RetrieveIndexFromUser("floor", warehouse.NumberOfFloors - 1);
-            bool hasMoved = warehouse.MoveBox(IDToMove, newLocation, newFloor);
-            if (hasMoved)
+            bool boxIsPresent = warehouse.FindBox(IDToMove, out int oldLocation, out int oldFloor);
+            if (boxIsPresent)
             {
-                Console.WriteLine("The box with ID: {0} has now moved to location: {1}, floor: {2}.", IDToMove, newLocation, newFloor);
+                int newLocation = RetrieveIndexFromUser("location", warehouse.NumberOfLocations - 1);
+                int newFloor = RetrieveIndexFromUser("floor", warehouse.NumberOfFloors - 1);
+                bool hasMoved = warehouse.MoveBox(IDToMove, newLocation, newFloor);
+                if (hasMoved)
+                {
+                    Console.WriteLine("The box with ID: {0} has now moved from location: {1}, floor {2}", IDToMove, oldLocation, oldFloor);
+                    Console.WriteLine("to location: {0}, floor: {1}.", newLocation, newFloor); 
+                }
+                else
+                {
+                    Console.WriteLine("The box with ID: {0} couldn't move to location: {1}, floor: {2}.", IDToMove, newLocation, newFloor);
+                    Console.WriteLine("It's still at location: {0}, floor: {1}.", oldLocation, oldFloor);
+                }
             }
             else
             {
-                Console.WriteLine("The box with ID: {0} couldn't move to location: {1}, floor: {2}.\n" +
-                    "It's still in it's old place.", IDToMove, newLocation, newFloor);
+                Console.WriteLine("There is no box present with ID: {0}.", IDToMove);
             }
             Console.ReadLine();
+            
         }
         /// <summary>
         /// Prompts user for an ID, then removes the box with that ID, if found
@@ -119,6 +132,8 @@ namespace Frontend
         /// </summary>
         internal void ListCertainSpot()
         {
+            Console.Clear();
+            Console.WriteLine("List all boxes found in a certain spot:");
             int location = RetrieveIndexFromUser("location", warehouse.NumberOfLocations - 1);
             int floor = RetrieveIndexFromUser("floor", warehouse.NumberOfFloors - 1);
             List<Box> listOfBoxes = warehouse.CopyBoxesFromLocation(location, floor);
@@ -128,13 +143,43 @@ namespace Frontend
             }
             else
             {
+                Console.WriteLine("----------------------------");
                 Console.WriteLine("Boxes found in location: {0} floor: {1}:", location, floor);
+                Console.WriteLine("----------------------------");
                 foreach (Box box in listOfBoxes)
                 {
-                    Console.WriteLine(box.ToString());
+                    Console.Write(box.ToString());
+                    Console.WriteLine("----------------------------");
                 }
             }
             Console.ReadLine();
+        }
+        /// <summary>
+        /// Lists every single location, and every single box found within, in the console.
+        /// </summary>
+        internal void ListAllBoxesInWarehouse()
+        {
+            Console.Clear();
+            Console.WriteLine("List all boxes found in the warehouse.");
+            Console.Write("NOTE: This list can be really long. Do you want to continue? Y/N");
+            ConsoleKey continueAnswer = Console.ReadKey().Key;
+            if(continueAnswer == ConsoleKey.Y)
+            {
+                for(int location = 1; location < warehouse.NumberOfLocations; location++)
+                {
+                    for(int floor = 1; floor < warehouse.NumberOfFloors; floor++)
+                    {
+                        Console.WriteLine("Boxes found in location: {0}, floor: {1}:", location, floor);
+                        Console.WriteLine("----------------------------");
+                        foreach (Box box in warehouse[location, floor])
+                        {
+                            Console.WriteLine(box.ToShortString());
+                        }
+                        Console.WriteLine("----------------------------");
+                    }
+                }
+                Console.ReadLine();
+            }
         }
         /// <summary>
         /// Saves the data to the database
@@ -329,18 +374,18 @@ namespace Frontend
         /// <returns>an integer containing a number usable as index</returns>
         private int RetrieveIndexFromUser(string indexType, int maxNumber)
         {
-            Console.Write("What {0}? (1-{1}) ", indexType, warehouse.NumberOfLocations - 1);
+            Console.Write("What {0}? (1-{1}) ", indexType, maxNumber);
             string locationString = Console.ReadLine();
             bool successfulParse = int.TryParse(locationString, out int place);
             while (!successfulParse || place > maxNumber)
             {
                 if (!successfulParse)
                 {
-                    Console.WriteLine("Only numbers, please.");
+                    Console.Write("Only numbers, please. Try again: ");
                 }
                 else
                 {
-                    Console.WriteLine("Only numbers between 1-{0}, please.", maxNumber);
+                    Console.Write("Only numbers between 1-{0}, please. Try again: ", maxNumber);
                 }
                 locationString = Console.ReadLine();
                 successfulParse = int.TryParse(locationString, out place);
