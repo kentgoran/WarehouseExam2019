@@ -3,11 +3,21 @@ using System.Text;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// A Cube, inherited from abstract class Box, which inherits I3DStorageObject.
+    /// </summary>
     public class Cube : Box
     {
         private int side;
         public int Side { get => side; }
-
+        /// <summary>
+        /// Constructs a new Cube
+        /// </summary>
+        /// <param name="id">The Cube's ID</param>
+        /// <param name="description">A short description of the Cube</param>
+        /// <param name="weight">The Cube's weight, in kilograms</param>
+        /// <param name="isFragile">Boolean stating if the Cube is fragile</param>
+        /// <param name="side">The Cube's side, in cm</param>
         internal Cube(int id, string description, double weight, bool isFragile, int side) : base(id, description, weight, isFragile)
         {
             this.side = side;

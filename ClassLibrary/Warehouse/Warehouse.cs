@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// This class instanstiates the actual warehouse, with an 2d-array of WarehouseLocations. It also works as a factory,
+    /// and is the only class able to create Boxes and WarehouseLocations.
+    /// Note: I'd rather make the factory a separate class, but my exam explicitly demands the Warehouse to take care of it.
+    /// </summary>
     public class Warehouse
     {
         private WarehouseLocation[,] storage;
@@ -15,6 +20,11 @@ namespace ClassLibrary
         private int currentIDCount = 1;
         public int NumberOfLocations { get => numberOfLocations; }
         public int NumberOfFloors { get => numberOfFloors; }
+        /// <summary>
+        /// Constructor for Warehouse-Class. Instanstiates it with a 2D-array of input parameters, numbersOfLocations and numbersOfFloors
+        /// </summary>
+        /// <param name="numberOfLocations">the amount of locations in the actual warehouse</param>
+        /// <param name="numberOfFloors">the amount of floors in the actual warehouse</param>
         public Warehouse(int numberOfLocations, int numberOfFloors)
         {
             this.storage = CreateStorage(numberOfLocations, numberOfFloors);
@@ -27,11 +37,6 @@ namespace ClassLibrary
             get
             {
                 return storage[index1, index2];
-            }
-            set
-            {
-                //Bör göra denna säkrare, behöver set finnas????
-                storage[index1, index2] = value;
             }
         }
 

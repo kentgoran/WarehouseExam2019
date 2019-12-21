@@ -2,6 +2,10 @@
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// Abstract class Box, inheriting from I3DStorageObject.
+    /// This class is to be inherited by all classes that want's to be able to be placed in a WarehouseLocation
+    /// </summary>
     public abstract class Box : I3DStorageObject
     {
         private int id;
@@ -21,7 +25,13 @@ namespace ClassLibrary
         public bool IsFragile { get => isFragile; }
         public int MaxDimension { get => maxDimension; }
         public int InsuranceValue { get => insuranceValue; set => insuranceValue = value; }
-
+        /// <summary>
+        /// Constructs a new box
+        /// </summary>
+        /// <param name="id">The box's ID-number</param>
+        /// <param name="description">A short description of the box</param>
+        /// <param name="weight">The box's weight, in kilograms</param>
+        /// <param name="isFragile">A boolean, describing if the box is fragile</param>
         internal Box(int id, string description, double weight, bool isFragile)
         {
             this.id = id;

@@ -3,6 +3,9 @@ using System.Text;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// A Cubeoid, inherited from abstract class Box, which inherits I3DStorageObject.
+    /// </summary>
     public class Cubeoid : Box
     {
         private int xSide;
@@ -12,7 +15,16 @@ namespace ClassLibrary
         public int XSide { get => xSide; }
         public int YSide { get => ySide; }
         public int ZSide { get => zSide; }
-
+        /// <summary>
+        /// Creates a new Cubeoid
+        /// </summary>
+        /// <param name="id">The Cubeoid's ID-number</param>
+        /// <param name="description">A short description of the Cubeoid</param>
+        /// <param name="weight">The Cubeoid's weight, in kilograms</param>
+        /// <param name="isFragile">A Boolean, stating if the Cubeoid is fragile</param>
+        /// <param name="xSide">The Cubeoid's x-side, in cm</param>
+        /// <param name="ySide">The Cubeoid's y-side, in cm</param>
+        /// <param name="zSide">The Cubeoid's z-side, in cm</param>
         internal Cubeoid(int id, string description, double weight, bool isFragile, int xSide, int ySide, int zSide) : base(id, description, weight, isFragile)
         {
             this.xSide = xSide;

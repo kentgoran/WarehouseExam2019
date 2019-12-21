@@ -3,11 +3,22 @@ using System.Text;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// A Sphere, inherited from abstract class Box, which inherits I3DStorageObject.
+    /// In this exam, a sphere is, by volume and area, counted as a cube.
+    /// </summary>
     public class Sphere : Box
     {
         private int radius;
         public int Radius { get => radius; }
-
+        /// <summary>
+        /// Creates a new Sphere
+        /// </summary>
+        /// <param name="id">The Sphere's ID-number</param>
+        /// <param name="description">a short description of the Sphere</param>
+        /// <param name="weight">The Sphere's weight, in kilograms</param>
+        /// <param name="isFragile">A Boolean, stating if the Sphere is fragile</param>
+        /// <param name="radius">The Sphere's radius, in cm</param>
         internal Sphere(int id, string description, double weight, bool isFragile, int radius) : base(id, description, weight, isFragile)
         {
             this.radius = radius;

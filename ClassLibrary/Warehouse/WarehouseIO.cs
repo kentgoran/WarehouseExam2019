@@ -5,10 +5,16 @@ using System.IO;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// This class handles reading from, and writing to, files.
+    /// </summary>
     internal class WarehouseIO
     {
         private readonly string filename;
-        
+        /// <summary>
+        /// Constructor for WarehouseIO. Filename represents the location to read and/or write.
+        /// </summary>
+        /// <param name="filename">Name or path of the file from which to read and/or write</param>
         internal WarehouseIO(string filename)
         {
             this.filename = filename;

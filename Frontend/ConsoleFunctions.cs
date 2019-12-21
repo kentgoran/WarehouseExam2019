@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Frontend
 {
+    /// <summary>
+    /// This class is used to handle the console-operations
+    /// </summary>
     class ConsoleFunctions
     {
         Warehouse warehouse = new Warehouse(101, 4);
@@ -18,10 +21,7 @@ namespace Frontend
         internal void AddBox(BoxType boxType)
         {
             Console.Clear();
-            //Enter description, which is a string, so no parsing needed
-            Console.Write("Please enter a description for the {0}: ", boxType);
-            string description = Console.ReadLine();
-
+            string description = GetDescription(boxType);
             double weight = GetWeight();
             //If it's a blob, don't ask for fragile, else, ask.
             bool isFragile = boxType == BoxType.Blob ? true : GetFragileStatement();
@@ -192,6 +192,34 @@ namespace Frontend
                 }
                 System.Environment.Exit(0);
             }
+        }
+        /// <summary>
+        /// Prompts user for a description, and makes sure it's 1-100 characters, and no # are in the description(it's used in the database)
+        /// </summary>
+        /// <param name="boxType">The type of box to describe</param>
+        /// <returns>a string containing the box's description</returns>
+        private string GetDescription(BoxType boxType)
+        {
+            Console.Write("Please enter a description for the {0}: ", boxType);
+            string description = Console.ReadLine();
+            while(description.Length < 1 || description.Length > 100 || description.Contains("#"))
+            {
+                if(description.Length < 1)
+                {
+                    Console.WriteLine("The description can't be left empty.");
+                }
+                if(description.Length > 100)
+                {
+                    Console.WriteLine("No more than 100 characters is allowed.");
+                }
+                if (description.Contains("#"))
+                {
+                    Console.WriteLine("Description can't contain the character '#'.");
+                }
+                Console.Write("Please enter a proper description for the {0}: ", boxType);
+                description = Console.ReadLine();
+            }
+            return description;
         }
         /// <summary>
         /// Prompts user and gets the weight of the box, as a double, in kilograms.

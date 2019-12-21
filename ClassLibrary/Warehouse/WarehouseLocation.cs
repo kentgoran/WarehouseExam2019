@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// Keeps the data for all the single-locations of boxes. instantiated with the limitations of the location
+    /// </summary>
     public class WarehouseLocation : IEnumerable
     {
         private List<Box> boxesPresent = new List<Box>();
@@ -23,7 +26,13 @@ namespace ClassLibrary
         internal int Depth { get => depth; }
         internal int MaxVolume { get => maxVolume; }
         internal double MaxWeight { get => maxWeight; }
-
+        /// <summary>
+        /// Constructor for WarehouseLocation, the different parameters should represent the actual locations limitations
+        /// </summary>
+        /// <param name="height">the height of the location</param>
+        /// <param name="width">width of the location</param>
+        /// <param name="depth">depth of the location</param>
+        /// <param name="maxWeight">the maximal weight the location can handle</param>
         internal WarehouseLocation(int height, int width, int depth, double maxWeight)
         {
             this.height = height;

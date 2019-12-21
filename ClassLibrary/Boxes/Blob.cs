@@ -3,11 +3,21 @@ using System.Text;
 
 namespace ClassLibrary
 {
+    /// <summary>
+    /// A Blob, inherited from abstract class box, which inherits I3DStorageObject.
+    /// A Blob is, in this exam, counted by volume and area, as a cube.
+    /// </summary>
     public class Blob : Box
     {
         private int side;
         public int Side { get => side; }
-
+        /// <summary>
+        /// Constructs a new Blob
+        /// </summary>
+        /// <param name="id">ID-number for the blob</param>
+        /// <param name="description">A short description of the blob</param>
+        /// <param name="weight">The blob's weight, in kilograms</param>
+        /// <param name="side">The side of the blob, in centimeters</param>
         internal Blob(int id, string description, double weight, int side) : base(id, description, weight, true)
         {
             this.side = side;

@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace Frontend
 {
+    /// <summary>
+    /// A class that handles the menu-functions
+    /// </summary>
     class Menu
     {
         ConsoleFunctions functions = new ConsoleFunctions();
+        /// <summary>
+        /// Prints the main menu, and let's the user decide what to do
+        /// </summary>
         public void MainMenu()
         {
             while (true)
@@ -70,7 +76,10 @@ namespace Frontend
                 }
             }
         }
-
+        /// <summary>
+        /// Prints a small menu which lets the user decide what type of box to create
+        /// </summary>
+        /// <returns></returns>
         private ConsoleFunctions.BoxType ChooseBoxType()
         {
             ConsoleFunctions.BoxType boxType = ConsoleFunctions.BoxType.NotSpecified;
@@ -110,7 +119,10 @@ namespace Frontend
             }
             return boxType;
         }
-
+        /// <summary>
+        /// A menu giving the user the possibility to read from either the normal database, or the test-database.
+        /// Also let's the user write to the normal database
+        /// </summary>
         private void ReadSaveMenu()
         {
             Console.Clear();
