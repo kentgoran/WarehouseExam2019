@@ -137,7 +137,8 @@ namespace Frontend
             Console.WriteLine("[1]    Save data to database");
             Console.WriteLine("[2]    Read data from database");
             Console.WriteLine("[3]    Read test-data from database (Note, for testing purposes only)");
-            Console.WriteLine("[4]    Return to main menu");
+            Console.WriteLine("[4]    Toggle autosave to database. Currently " + (functions.WarehouseAutoSave ? "ON." : "OFF."));
+            Console.WriteLine("[5]    Return to main menu");
             ConsoleKey chosenAlternative = Console.ReadKey().Key;
             Console.WriteLine();
             switch (chosenAlternative)
@@ -156,11 +157,15 @@ namespace Frontend
                     break;
                 case ConsoleKey.D4:
                 case ConsoleKey.NumPad4:
+                    functions.WarehouseAutoSave = !functions.WarehouseAutoSave;
+                    ReadSaveMenu();
+                    break;
+                case ConsoleKey.D5:
+                case ConsoleKey.NumPad5:
                     break;
                 default:
                     break;
             }
         }
-    
     }
 }

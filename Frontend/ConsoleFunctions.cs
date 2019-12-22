@@ -10,6 +10,7 @@ namespace Frontend
     class ConsoleFunctions
     {
         Warehouse warehouse = new Warehouse(101, 4);
+        public bool WarehouseAutoSave { get => warehouse.AutoSave; set => warehouse.AutoSave = value; }
         internal enum BoxType
         {
             Blob, Cube, Cubeoid, Sphere, NotSpecified
@@ -163,6 +164,7 @@ namespace Frontend
             Console.WriteLine("List all boxes found in the warehouse.");
             Console.Write("NOTE: This list can be really long. Do you want to continue? Y/N");
             ConsoleKey continueAnswer = Console.ReadKey().Key;
+            Console.Clear();
             if(continueAnswer == ConsoleKey.Y)
             {
                 for(int location = 1; location < warehouse.NumberOfLocations; location++)
@@ -228,13 +230,30 @@ namespace Frontend
             Console.WriteLine();
             if (exitYN == ConsoleKey.Y || exitYN == ConsoleKey.Escape)
             {
-                Console.Write("Do you want to save your data to the database? Y/N ");
-                ConsoleKey saveFileYN = Console.ReadKey().Key;
-                Console.WriteLine();
-                if(saveFileYN == ConsoleKey.Y)
+                bool databaseSaved = false;
+                if (!warehouse.AutoSave)
                 {
-                    warehouse.WriteToDatabase();
+                    Console.Write("Do you want to save your data to the database (Note: Autosave is toggled off)? Y/N ");
+                    ConsoleKey saveFileYN = Console.ReadKey().Key;
+                    if (saveFileYN == ConsoleKey.Y)
+                    {
+                        databaseSaved = warehouse.WriteToDatabase();
+                    }
                 }
+                else
+                {
+                    databaseSaved = warehouse.WriteToDatabase();
+                }
+                if (databaseSaved)
+                {
+                    Console.WriteLine("Data saved to database. press enter to quit.");
+                }
+                else
+                {
+                    Console.WriteLine("Data not saved to database, press enter to quit.");
+                }
+                Console.ReadLine();
+
                 System.Environment.Exit(0);
             }
         }

@@ -17,10 +17,12 @@ namespace ClassLibrary
         private WarehouseLocation[,] storage;
         private readonly int numberOfLocations;
         private readonly int numberOfFloors;
+        private bool autoSave = true;
         //currentIDCount is used to ensure every box gets it's own unique ID-number
         private int currentIDCount = 1;
         public int NumberOfLocations { get => numberOfLocations; }
         public int NumberOfFloors { get => numberOfFloors; }
+        public bool AutoSave { get => autoSave; set => autoSave = value; }
         /// <summary>
         /// Constructor for Warehouse-Class. Instanstiates it with a 2D-array of input parameters, numbersOfLocations and numbersOfFloors
         /// </summary>
@@ -134,6 +136,10 @@ namespace ClassLibrary
                     {
                         placedLocation = i;
                         placedFloor = j;
+                        if (autoSave)
+                        {
+                            WriteToDatabase();
+                        }
                         return true;
                     }
                 }
@@ -153,6 +159,10 @@ namespace ClassLibrary
         {
             if (storage[location, floor].AddBox(box))
             {
+                if (autoSave)
+                {
+                    WriteToDatabase();
+                }
                 return true;
             }
             return false;
@@ -212,6 +222,10 @@ namespace ClassLibrary
                 Box boxToMove = storage[location, floor].RetrieveBoxByID(id);
                 if (storage[newLocation, newFloor].AddBox(boxToMove))
                 {
+                    if (autoSave)
+                    {
+                        WriteToDatabase();
+                    }
                     return true;
                 }
                 //If the box can't fit in the new WarehouseLocation, put it back in it's earlier place
@@ -232,6 +246,10 @@ namespace ClassLibrary
             if (boxIsFound)
             {
                 storage[location, floor].RetrieveBoxByID(id);
+                if (autoSave)
+                {
+                    WriteToDatabase();
+                }
                 return true;
             }
             return false;
