@@ -12,7 +12,7 @@ namespace ClassLibrary
     /// </summary>
     public class WarehouseLocation : IEnumerable
     {
-        private List<Box> boxesPresent = new List<Box>();
+        private List<Box> boxes = new List<Box>();
         private int height;
         private int width;
         private int depth;
@@ -26,6 +26,7 @@ namespace ClassLibrary
         internal int Depth { get => depth; }
         internal int MaxVolume { get => maxVolume; }
         internal double MaxWeight { get => maxWeight; }
+        public List<Box> Boxes { get => boxes; }
         /// <summary>
         /// Constructor for WarehouseLocation, the different parameters should represent the actual locations limitations
         /// </summary>
@@ -81,7 +82,7 @@ namespace ClassLibrary
         {
             if (BoxCanBeAdded(box))
             {
-                boxesPresent.Add(box);
+                boxes.Add(box);
                 currentVolume += box.Volume;
                 currentWeight += box.Weight;
                 if (box.IsFragile)
@@ -99,9 +100,9 @@ namespace ClassLibrary
         /// <returns>True if given ID is found, else false</returns>
         internal bool IDIsPresent(int id)
         {
-            for (int i = 0; i < boxesPresent.Count; i++)
+            for (int i = 0; i < boxes.Count; i++)
             {
-                if (boxesPresent[i].ID == id)
+                if (boxes[i].ID == id)
                 {
                     return true;
                 }
@@ -117,18 +118,18 @@ namespace ClassLibrary
         /// <returns>The removed box if successful, else null</returns>
         internal Box RetrieveBoxByID(int id)
         {
-            for(int i=0; i<boxesPresent.Count; i++)
+            for(int i=0; i<boxes.Count; i++)
             {
-                if(boxesPresent[i].ID == id)
+                if(boxes[i].ID == id)
                 {
-                    if (boxesPresent[i].IsFragile)
+                    if (boxes[i].IsFragile)
                     {
                         containsFragileBox = false;
                     }
-                    currentVolume -= boxesPresent[i].Volume;
-                    currentWeight -= boxesPresent[i].Weight;
-                    Box boxToReturn = boxesPresent[i];
-                    boxesPresent.RemoveAt(i);
+                    currentVolume -= boxes[i].Volume;
+                    currentWeight -= boxes[i].Weight;
+                    Box boxToReturn = boxes[i];
+                    boxes.RemoveAt(i);
                     return boxToReturn;
                 }
             }
@@ -141,11 +142,11 @@ namespace ClassLibrary
         /// <returns>A box, copied from the box with the id input</returns>
         internal Box RetrieveCopyOfBox(int id)
         {
-            for (int i = 0; i < boxesPresent.Count; i++)
+            for (int i = 0; i < boxes.Count; i++)
             {
-                if (boxesPresent[i].ID == id)
+                if (boxes[i].ID == id)
                 {
-                    Box boxToReturn = boxesPresent[i];
+                    Box boxToReturn = boxes[i];
                     return boxToReturn;
                 }
             }
@@ -155,9 +156,9 @@ namespace ClassLibrary
         /// Returns a list of boxes currently present in the WarehouseLocation
         /// </summary>
         /// <returns>Returns a list of boxes contained in the WarehouseLocation</returns>
-        internal List<Box> Content()
+        public List<Box> Content()
         {
-            return boxesPresent;
+            return boxes;
         }
         /// <summary>
         /// Clones the current WarehouseLocation, and returns the clone.
@@ -179,7 +180,7 @@ namespace ClassLibrary
         /// <returns>Returns an enumerator that iretates through a list of boxes</returns>
         public IEnumerator GetEnumerator()
         {
-            return boxesPresent.GetEnumerator();
+            return boxes.GetEnumerator();
         }
         /// <summary>
         /// Returns an enumerator that iterates through the list of boxes found in the instance
@@ -187,7 +188,7 @@ namespace ClassLibrary
         /// <returns>Returns an enumerator that iretates through a list of boxes</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return boxesPresent.GetEnumerator();
+            return boxes.GetEnumerator();
         }
     }
 }

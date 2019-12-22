@@ -265,17 +265,7 @@ namespace ClassLibrary
             return false;
         }
 
-        //Copy/Clone
-        /// <summary>
-        /// Retrieves a copied list of all the boxes from the current WarehouseLocation, and returns it
-        /// </summary>
-        /// <param name="location">the location to get the boxes from</param>
-        /// <param name="floor">The floor from where to get the boxes</param>
-        /// <returns>a list of boxes</returns>
-        public List<Box> CopyBoxesFromLocation(int location, int floor)
-        {
-            return storage[location, floor].Content();
-        }
+        //Clone
         /// <summary>
         /// Retrieves a clone of the WarehouseLocation at input location and floor.
         /// Note: Required by the exam-demands.

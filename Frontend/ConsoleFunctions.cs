@@ -140,8 +140,7 @@ namespace Frontend
             Console.WriteLine("List all boxes found in a certain spot:");
             int location = RetrieveIndexFromUser("location", warehouse.NumberOfLocations - 1);
             int floor = RetrieveIndexFromUser("floor", warehouse.NumberOfFloors - 1);
-            List<Box> listOfBoxes = warehouse.CopyBoxesFromLocation(location, floor);
-            if(listOfBoxes.Count < 1)
+            if(warehouse[location,floor].Boxes.Count < 1)
             {
                 Console.WriteLine("There are no boxes present in location: {0} floor: {1}.", location, floor);
             }
@@ -150,7 +149,7 @@ namespace Frontend
                 Console.WriteLine("----------------------------");
                 Console.WriteLine("Boxes found in location: {0} floor: {1}:", location, floor);
                 Console.WriteLine("----------------------------");
-                foreach (Box box in listOfBoxes)
+                foreach (Box box in warehouse[location, floor].Boxes)
                 {
                     Console.Write(box.ToString());
                     Console.WriteLine("----------------------------");
