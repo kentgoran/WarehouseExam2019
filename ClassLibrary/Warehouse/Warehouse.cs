@@ -34,7 +34,12 @@ namespace ClassLibrary
             this.numberOfLocations = numberOfLocations;
             this.numberOfFloors = numberOfFloors;
         }
-        
+        /// <summary>
+        /// An Indexer, returning the wanted WarehouseLocation.
+        /// </summary>
+        /// <param name="index1">The "Location"-index to look at</param>
+        /// <param name="index2">The "Floor"-index to look at</param>
+        /// <returns>A WarehouseLocation, found at index [index1(Location),index2(Floor)]</returns>
         public WarehouseLocation this[int index1, int index2]
         {
             get
@@ -43,6 +48,7 @@ namespace ClassLibrary
             }
         }
 
+        //Factory-methods
         /// <summary>
         /// Creates a new, empty 2-dimensional WarehouseLocation-array, given the amount of floors, and locations per floor
         /// </summary>
@@ -119,6 +125,8 @@ namespace ClassLibrary
         {
             return new Sphere(currentIDCount++, description, weight, isFragile, radius);
         }
+
+        //Storing-methods
         /// <summary>
         /// Tries to store given box in the warehouse, at the first available spot
         /// </summary>
@@ -167,6 +175,8 @@ namespace ClassLibrary
             }
             return false;
         }
+
+        //Find/Move/Remove
         /// <summary>
         /// Tries to find a box by given ID-number. If found, out-parameters show the WarehouseLocation of the box.
         /// Else, returns false, and out-parameters are assigned value -1.
@@ -254,6 +264,8 @@ namespace ClassLibrary
             }
             return false;
         }
+
+        //Copy/Clone
         /// <summary>
         /// Retrieves a copied list of all the boxes from the current WarehouseLocation, and returns it
         /// </summary>
@@ -266,6 +278,7 @@ namespace ClassLibrary
         }
         /// <summary>
         /// Retrieves a clone of the WarehouseLocation at input location and floor.
+        /// Note: Required by the exam-demands.
         /// </summary>
         /// <param name="location">The location where to Clone</param>
         /// <param name="floor">The floor where to Clone</param>
@@ -274,25 +287,8 @@ namespace ClassLibrary
         {
             return storage[location, floor].Clone();
         }
-        /// <summary>
-        /// Finds the highest current ID-number, and returns it as an integer
-        /// </summary>
-        /// <returns>an integer containing the current highest integer</returns>
-        private int FindHighestID()
-        {
-            int highestID = 0;
-            for(int i=1; i<storage.GetLength(0); i++)
-            {
-                for(int j=1; j<storage.GetLength(1); j++)
-                {
-                    foreach(Box box in storage[i, j])
-                    {
-                        highestID = highestID > box.ID ? highestID : box.ID;
-                    }
-                }
-            }
-            return highestID;
-        }
+
+        //Read/Write
         /// <summary>
         /// Tells WarehouseIO to write to given file, or "database.txt" if no filename is given
         /// </summary>
@@ -312,18 +308,45 @@ namespace ClassLibrary
         public bool ReadFromDatabase(string filename = "database.txt")
         {
             WarehouseIO databaseReader = new WarehouseIO(filename);
-            storage = databaseReader.ReadFromDatabase();
-            currentIDCount = FindHighestID() + 1;
-            if(storage == null)
+            WarehouseLocation[,] storageReadFromDatabase = databaseReader.ReadFromDatabase();
+            if(storageReadFromDatabase == null)
             {
                 return false;
             }
+            storage = storageReadFromDatabase;
+            currentIDCount = FindHighestID() + 1;
             return true;
         }
-        
+
+        //Enumerator
+        /// <summary>
+        /// Returns an enumerator that iterates through the WarehouseLocations found in the Warehouse
+        /// </summary>
+        /// <returns>Returns an enumerator iterating through WarehouseLocations</returns>
         public IEnumerator GetEnumerator()
         {
             return storage.GetEnumerator();
+        }
+
+        //Private methods below
+        /// <summary>
+        /// Finds the highest current ID-number, and returns it as an integer
+        /// </summary>
+        /// <returns>an integer containing the current highest integer</returns>
+        private int FindHighestID()
+        {
+            int highestID = 0;
+            for (int i = 1; i < storage.GetLength(0); i++)
+            {
+                for (int j = 1; j < storage.GetLength(1); j++)
+                {
+                    foreach (Box box in storage[i, j])
+                    {
+                        highestID = highestID > box.ID ? highestID : box.ID;
+                    }
+                }
+            }
+            return highestID;
         }
     }
 }

@@ -93,14 +93,6 @@ namespace ClassLibrary
             return false;
         }
         /// <summary>
-        /// Empties out the current WarehouseLocation.
-        /// CAUTION! This removes any boxes contained inside.
-        /// </summary>
-        internal void ClearOutLocation()
-        {
-            boxesPresent = new List<Box>();
-        }
-        /// <summary>
         /// Checks if given ID-number is present in the WarehouseLocation. If it is, returns true, else false.
         /// </summary>
         /// <param name="id">the ID-number to search for</param>

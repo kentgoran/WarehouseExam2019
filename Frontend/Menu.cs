@@ -17,6 +17,7 @@ namespace Frontend
         /// </summary>
         public void MainMenu()
         {
+            functions.ReadFromFile();
             while (true)
             {
                 try
@@ -145,11 +146,11 @@ namespace Frontend
             {
                 case ConsoleKey.D1:
                 case ConsoleKey.NumPad1:
-                    functions.ManuallySaveToFile();
+                    functions.SaveToFile();
                     break;
                 case ConsoleKey.D2:
                 case ConsoleKey.NumPad2:
-                    functions.ManuallyReadFromFile();
+                    functions.ReadFromFile();
                     break;
                 case ConsoleKey.D3:
                 case ConsoleKey.NumPad3:

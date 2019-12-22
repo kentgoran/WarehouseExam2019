@@ -9,7 +9,10 @@ namespace Frontend
     /// </summary>
     class ConsoleFunctions
     {
-        Warehouse warehouse = new Warehouse(101, 4);
+        private Warehouse warehouse = new Warehouse(101, 4);
+        /// <summary>
+        /// Passes through the autosave-boolean, so that the menu can print it's current value.
+        /// </summary>
         public bool WarehouseAutoSave { get => warehouse.AutoSave; set => warehouse.AutoSave = value; }
         internal enum BoxType
         {
@@ -53,7 +56,7 @@ namespace Frontend
                 newBox = warehouse.CreateSphere(description, weight, isFragile, radius);
             }
 
-            Console.WriteLine("Your box has been created, and it has ID-{0}.", newBox.ID);
+            Console.WriteLine("Your box has been created, and it has ID: {0}.", newBox.ID);
             PlaceBoxInStorage(newBox);
         }
         /// <summary>
@@ -184,9 +187,9 @@ namespace Frontend
             }
         }
         /// <summary>
-        /// Saves the data to the database
+        /// Saves the data found in the current warehouse in the database
         /// </summary>
-        internal void ManuallySaveToFile()
+        internal void SaveToFile()
         {
             bool success = warehouse.WriteToDatabase();
             if (success)
@@ -196,9 +199,9 @@ namespace Frontend
             Console.ReadLine();
         }
         /// <summary>
-        /// Reads in data from the database.
+        /// Reads in data from the database, and puts it in the current warehouse.
         /// </summary>
-        internal void ManuallyReadFromFile()
+        internal void ReadFromFile()
         {
             bool success = warehouse.ReadFromDatabase();
             if (success)
@@ -208,7 +211,7 @@ namespace Frontend
             Console.ReadLine();
         }
         /// <summary>
-        /// Reads in data from the testdatabase.txt
+        /// Reads in data from the testdatabase.txt, and puts it in the current warehouse
         /// </summary>
         internal void ReadTestData()
         {
@@ -343,13 +346,15 @@ namespace Frontend
         /// <param name="box">The input box to be put in storage</param>
         private void PlaceBoxInStorage(Box box)
         {
-            Console.Write("Do you want to choose the location for the box? Y/N ");
+            Console.Write("Do you want to choose the location for the box?" +
+                "\n(if not, the system automatically choses for you) Y/N ");
             ConsoleKey chooseLocation = Console.ReadKey().Key;
             Console.WriteLine();
             while (!(chooseLocation == ConsoleKey.Y || chooseLocation == ConsoleKey.N))
             {
                 Console.Write("Please only enter Y or N. Do you want to choose the location to put the box? Y/N: ");
                 chooseLocation = Console.ReadKey().Key;
+                Console.WriteLine();
             }
             if(chooseLocation == ConsoleKey.Y)
             {
@@ -358,7 +363,7 @@ namespace Frontend
                 bool successfullyPlaced = warehouse.StoreBoxManually(box, location, floor);
                 if (successfullyPlaced)
                 {
-                    Console.WriteLine("Box successfully placed at location {0}, floor {0}.", location, floor);
+                    Console.WriteLine("Box successfully placed at location {0}, floor {1}.", location, floor);
                     Console.WriteLine("The box's ID-number is: {0}.", box.ID);
                     Console.ReadLine();
                 }

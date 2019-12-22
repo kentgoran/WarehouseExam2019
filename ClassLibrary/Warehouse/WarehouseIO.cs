@@ -30,11 +30,15 @@ namespace ClassLibrary
             {
                 try
                 {
+                    //Start by printing length of the database, for the reader to be able to instantiate a warehouse of the same length
                     databaseWriter.WriteLine("Length of database #{0}#{1}", storage.GetLength(0), storage.GetLength(1));
+                    //Iterate Locations
                     for(int i=1; i<storage.GetLength(0); i++)
                     {
+                        //Iterate Floors
                         for(int j=1; j<storage.GetLength(1); j++)
                         {
+                            //Write current location and floor, and then any boxes, if location has any
                             databaseWriter.WriteLine("{0}#{1}", i, j);
                             foreach(Box box in storage[i, j])
                             {
@@ -59,15 +63,21 @@ namespace ClassLibrary
         internal WarehouseLocation[,] ReadFromDatabase()
         {
             WarehouseLocation[,] storageFromDatabase;
+            if (!File.Exists(filename))
+            {
+                FileStream fileCreator = File.Create(filename);
+                fileCreator.Close();
+            }
             using(StreamReader databaseReader = new StreamReader(filename))
             {
                 try
                 {
                     //The first line in the database contains information about the
-                    //length of the storage. Here it's read, and the storage is formed accordingly
+                    //length of the storage. Here it's read, and the storage is instantiated accordingly
                     string[] lengthOfDatabase = databaseReader.ReadLine().Split('#');
                     bool foundLocation = (int.TryParse(lengthOfDatabase[1], out int location));
                     bool foundFloor = (int.TryParse(lengthOfDatabase[2], out int floor));
+                    //If location and floor, together, can't be parsed to int's, the database is faulty, or empty.
                     if (foundLocation && foundFloor)
                     {
                         storageFromDatabase = new WarehouseLocation[location, floor];
@@ -76,7 +86,7 @@ namespace ClassLibrary
                     {
                         throw new InvalidDataException("Database is corrupt or empty");
                     }
-                    //storageFromDatabase needs to be instanciated before filling it with database-content
+                    //storageFromDatabase needs to be instanciated, at every index, before filling it with database-content
                     for (int i = 0; i < storageFromDatabase.GetLength(0); i++)
                     {
                         for (int j = 0; j < storageFromDatabase.GetLength(1); j++)
@@ -192,6 +202,7 @@ namespace ClassLibrary
                 exceptionWriter.WriteLine(DateTime.Now.ToString());
                 exceptionWriter.WriteLine(exception.GetType().ToString());
                 exceptionWriter.WriteLine(exception.Message);
+                exceptionWriter.WriteLine(exception.StackTrace);
                 exceptionWriter.WriteLine("---------------------------------");
                 exceptionWriter.WriteLine();
             }
